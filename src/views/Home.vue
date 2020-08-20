@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <user-table :per-page="15" @error="onError"></user-table>
+    <div v-if="error" class="alert alert-danger">{{error}}</div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+  import UserTable from '@/components/UserTable.vue';
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  export default {
+    props: ['page'],
+    data() {
+      return {
+        error: ''
+      }
+    },
+    name: 'Home',
+    components: {
+      UserTable
+    },
+    methods: {
+      onError(err) {
+        this.error = err;
+      }
+    },
+    errorCaptured(err, vm, info) {
+      this.error = err.toString();
+      return false;
+    },
   }
-}
 </script>
